@@ -25,6 +25,7 @@
         android:text="@string/error_retry"
         android:visibility="gone"
         android:textAppearance="@style/TextAppearance.White"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
