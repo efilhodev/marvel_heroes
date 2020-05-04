@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_extra_large">64dp</dimen>
+    <dimen name="character_detail_image_height">400dp</dimen>
+    <dimen name="card_elevation_default">2dp</dimen>
+    <dimen name="card_corner_radius_default">4dp</dimen>
+    <dimen name="item_list_image_height">252dp</dimen>
+    <dimen name="padding_default">16dp</dimen>
+    <dimen name="item_list_favorite_character_image_height">252dp</dimen>
+</resources>

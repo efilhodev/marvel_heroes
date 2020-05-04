@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Marvel</string>
+    <string name="error_retry">Error, tap to retry</string>
+    <string name="error_connection">Connection unavailable</string>
+    <string name="character_detail_no_description">Have no description</string>
+    <string name="characters">Characters</string>
+    <string name="favorites">Favorites</string>
+    <string name="favorites_empty_list">You have no favorites</string>
+</resources>
