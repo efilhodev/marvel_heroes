@@ -2,6 +2,7 @@ package br.com.efilhodev.marvel_heroes.feature.base.view
 
 import android.os.Bundle
 import br.com.efilhodev.marvel_heroes.R
+import br.com.efilhodev.marvel_heroes.feature.base.gateway.BaseViewModel
 import br.com.efilhodev.marvel_heroes.feature.favorites.view.FavoritesFragment
 import br.com.efilhodev.marvel_heroes.feature.home.view.HomeFragment
 import kotlinx.android.synthetic.main.activity_host.*
@@ -23,6 +24,10 @@ class HostActivity : BaseActivity() {
 
         adapter.addFragment(HomeFragment(), getString(R.string.characters))
         adapter.addFragment(FavoritesFragment(), getString(R.string.favorites))
+    }
+
+    override fun initViewModel(): BaseViewModel? {
+        return null
     }
 
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {

@@ -1,6 +1,5 @@
 package br.com.efilhodev.marvel_heroes.feature.home.view
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import br.com.efilhodev.marvel_heroes.R
 import br.com.efilhodev.marvel_heroes.model.Character
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import kotlinx.android.synthetic.main.character_detail_activity.view.*
 import kotlinx.android.synthetic.main.item_list_character.view.*
 
 class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,9 +25,13 @@ class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             showCharacterImage()
 
-            if (isFavorite) itemView.item_list_character_favorite_image.setImageResource(R.drawable.ic_favorite_24dp)
-            else itemView.item_list_character_favorite_image.setImageResource(R.drawable.ic_favorite_border_24dp)
+            changeFavoriteIconStatus(isFavorite)
         }
+    }
+
+    private fun changeFavoriteIconStatus(isFavorite: Boolean) {
+        if (isFavorite) itemView.item_list_character_favorite_image.setImageResource(R.drawable.ic_favorite_24dp)
+        else itemView.item_list_character_favorite_image.setImageResource(R.drawable.ic_favorite_border_24dp)
     }
 
     private fun Character.showCharacterImage() {

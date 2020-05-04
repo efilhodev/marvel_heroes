@@ -1,6 +1,7 @@
 package br.com.efilhodev.marvel_heroes.plugin.dagger.module
 
 import androidx.lifecycle.ViewModel
+import br.com.efilhodev.marvel_heroes.feature.details.gateway.CharacterDetailViewModel
 import br.com.efilhodev.marvel_heroes.feature.favorites.gateway.FavoritesViewModel
 import br.com.efilhodev.marvel_heroes.feature.home.gateway.HomeViewModel
 import br.com.efilhodev.marvel_heroes.plugin.dagger.viewmodel.ViewModelKey
@@ -20,4 +21,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavoritesViewModel::class)
     abstract fun bindFavoritesViewModel(viewmodel: FavoritesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CharacterDetailViewModel::class)
+    abstract fun bindCharacterDetailViewModel(viewmodel: CharacterDetailViewModel): ViewModel
 }
