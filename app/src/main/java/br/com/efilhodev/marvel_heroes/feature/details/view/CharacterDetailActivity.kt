@@ -10,9 +10,7 @@ import br.com.efilhodev.marvel_heroes.feature.details.gateway.CharacterDetailVie
 import br.com.efilhodev.marvel_heroes.model.Character
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import kotlinx.android.synthetic.main.activity_host.*
-import kotlinx.android.synthetic.main.character_detail_activity.*
-import kotlinx.android.synthetic.main.item_list_character.view.*
+import kotlinx.android.synthetic.main.activity_character_detail.*
 
 class CharacterDetailActivity : BaseActivity() {
 
@@ -22,7 +20,7 @@ class CharacterDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.character_detail_activity)
+        setContentView(R.layout.activity_character_detail)
 
         character = getCharacterArg()
         setupViews()
@@ -35,7 +33,7 @@ class CharacterDetailActivity : BaseActivity() {
     }
 
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
-        if (isConnected.not()) showErrorSnackBar(host_root, getString(R.string.error_connection))
+        if (isConnected.not()) showErrorSnackBar(character_detail_host, getString(R.string.error_connection))
         else hideErrorSnackBar()
     }
 

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_list_character.view.*
 class CharacterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     fun bind(
-        onFavoriteClick: (Character, Boolean) -> Unit?,
+        onFavoriteClick: (Character, Boolean) -> Unit,
         onDetailClick: (Character) -> Unit?,
         character: Character?,
         isFavorite: Boolean

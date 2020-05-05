@@ -1,47 +1,44 @@
-package br.com.efilhodev.marvel_heroes.feature.home.view
+package br.com.efilhodev.marvel_heroes.feature.search.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import br.com.efilhodev.marvel_heroes.R
 import br.com.efilhodev.marvel_heroes.feature.base.gateway.BaseViewModel
-import br.com.efilhodev.marvel_heroes.feature.base.view.BaseFragment
+import br.com.efilhodev.marvel_heroes.feature.base.view.BaseActivity
 import br.com.efilhodev.marvel_heroes.feature.base.view.Navigation
 import br.com.efilhodev.marvel_heroes.feature.details.view.CharacterDetailActivity
 import br.com.efilhodev.marvel_heroes.feature.home.gateway.DataSourceState
-import br.com.efilhodev.marvel_heroes.feature.home.gateway.HomeViewModel
+import br.com.efilhodev.marvel_heroes.feature.home.view.HomeFragment
+import br.com.efilhodev.marvel_heroes.feature.search.gateway.SearchViewModel
 import br.com.efilhodev.marvel_heroes.model.Character
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.activity_host.*
+import kotlinx.android.synthetic.main.activity_search.*
 
-class HomeFragment : BaseFragment() {
+class SearchActivity : BaseActivity() {
+    private lateinit var viewmodel: SearchViewModel
 
-    private lateinit var viewmodel: HomeViewModel
-    private lateinit var adapter: CharacterListAdapter
-
+    private lateinit var adapter: SearchListAdapter
     private var isInitialLoad = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_search)
+
+        viewmodel.getCharactersByName("Sp")
+        setupCharacterListAdapter()
     }
 
-    override fun initViewModel(): BaseViewModel {
-        viewmodel = viewmodelFactory.create(HomeViewModel::class.java)
+    override fun initViewModel(): BaseViewModel? {
+        viewmodel = viewmodelFactory.create(SearchViewModel::class.java)
         return viewmodel
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        setupCharacterListAdapter()
-        setupCharacterListRetry()
+    override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
+        if (isConnected.not()) showErrorSnackBar(host_root, getString(R.string.error_connection))
+        else hideErrorSnackBar()
     }
 
     private fun setupCharacterListAdapter() {
@@ -50,16 +47,14 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun observeFavoritesCharacterIds() {
-        viewmodel.actionFavoritesCharactersIds.observe(viewLifecycleOwner, Observer {
+        viewmodel.actionFavoritesCharactersIds.observe(this, Observer {
             if (this::adapter.isInitialized.not()) startCharacterListAdapter(it)
             else adapter.updateFavorites(it)
         })
     }
 
     private fun startCharacterListAdapter(favoritesCharactersIds: List<Int>) {
-        adapter = CharacterListAdapter(
-            onRetryClick = { viewmodel.retryCharactersLoad() },
-
+        adapter = SearchListAdapter(
             onFavoriteClick = { character, isFavorite ->
                 viewmodel.setOrRemoveFavoriteCharacter(character, isFavorite)
             },
@@ -76,36 +71,34 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        home_recycler_view.layoutManager = StaggeredGridLayoutManager(
-            DEFAULT_SPAN_COUNT,
+        search_recycler_view.layoutManager = StaggeredGridLayoutManager(
+            HomeFragment.DEFAULT_SPAN_COUNT,
             RecyclerView.VERTICAL
         )
-        home_recycler_view.adapter = adapter
+        search_recycler_view.adapter = adapter
     }
 
     private fun navigateToCharacterDetailActivity(character: Character) {
         val bundle = Bundle()
         bundle.putSerializable(CharacterDetailActivity.CHARACTER_ARG, character)
 
-        Navigation.navigate(context, CharacterDetailActivity::class.java, bundle)
+        Navigation.navigate(this, CharacterDetailActivity::class.java, bundle)
     }
 
     private fun observeGetCharacters() {
-        viewmodel.actionGetCharacters.observe(
-            viewLifecycleOwner,
+        viewmodel.getCharacters.observe(
+            this,
             Observer { characters -> adapter.submitList(characters) })
     }
 
     private fun observeCharacterDataSourceState() {
-        viewmodel.actionCharacterDataSourceState.observe(
-            viewLifecycleOwner,
+        viewmodel.state.observe(
+            this,
             Observer { setViewState(it) }
         )
     }
 
     private fun setViewState(state: DataSourceState) {
-        adapter.setState(state)
-
         when (state) {
             DataSourceState.LOADING -> {
                 showLoadingState()
@@ -118,32 +111,24 @@ class HomeFragment : BaseFragment() {
             }
         }
     }
-
     private fun showErrorState() {
         if (isInitialLoad) {
-            home_progress_bar.visibility = View.GONE
-            home_error_text_view.visibility = View.VISIBLE
+            search_progress_bar.visibility = View.GONE
+            search_error_text_view.visibility = View.VISIBLE
         }
     }
 
     private fun showLoadingState() {
         if (isInitialLoad) {
-            home_progress_bar.visibility = View.VISIBLE
-            home_error_text_view.visibility = View.GONE
+            search_progress_bar.visibility = View.VISIBLE
+            search_error_text_view.visibility = View.GONE
         }
     }
 
     private fun showDoneState() {
         isInitialLoad = false
-        home_progress_bar.visibility = View.GONE
-        home_error_text_view.visibility = View.GONE
+        search_progress_bar.visibility = View.GONE
+        search_error_text_view.visibility = View.GONE
     }
 
-    private fun setupCharacterListRetry() {
-        home_error_text_view.setOnClickListener { viewmodel.retryCharactersLoad() }
-    }
-
-    companion object {
-        const val DEFAULT_SPAN_COUNT = 2
-    }
 }

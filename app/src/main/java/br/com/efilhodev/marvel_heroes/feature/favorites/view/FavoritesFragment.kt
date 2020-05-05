@@ -14,6 +14,7 @@ import br.com.efilhodev.marvel_heroes.feature.base.view.BaseFragment
 import br.com.efilhodev.marvel_heroes.feature.base.view.Navigation
 import br.com.efilhodev.marvel_heroes.feature.details.view.CharacterDetailActivity
 import br.com.efilhodev.marvel_heroes.feature.favorites.gateway.FavoritesViewModel
+import br.com.efilhodev.marvel_heroes.feature.home.view.HomeFragment
 import br.com.efilhodev.marvel_heroes.model.Character
 import kotlinx.android.synthetic.main.fragment_favorites.*
 
@@ -48,7 +49,7 @@ class FavoritesFragment : BaseFragment() {
         )
 
         favorites_recycler_view.layoutManager =
-            StaggeredGridLayoutManager(DEFAULT_SPAN_COUNT, RecyclerView.VERTICAL)
+            StaggeredGridLayoutManager(HomeFragment.DEFAULT_SPAN_COUNT, RecyclerView.VERTICAL)
         favorites_recycler_view.adapter = adapter
 
         observeFavoritesCharacters()
@@ -81,9 +82,5 @@ class FavoritesFragment : BaseFragment() {
 
     private fun hideEmptyListView() {
         favorites_empty_list_text_view.visibility = View.GONE
-    }
-
-    companion object {
-        private const val DEFAULT_SPAN_COUNT = 2
     }
 }
