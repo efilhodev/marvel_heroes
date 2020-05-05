@@ -12,6 +12,7 @@ interface API {
         @Query("hash") hash: String = Authentication.getHashKey(),
         @Query("apikey") apikey: String = Authentication.PUBLIC_KEY,
         @Query("limit") limit: Int,
-        @Query("offset") offset: Int
+        @Query("offset") offset: Int,
+        @Query("nameStartsWith") nameStartsWith: String?
     ): Flow<CharacterDataWrapper>
 }

@@ -13,7 +13,7 @@ class GetCharactersDataSourceFactory @Inject constructor(private val source: Get
         return source
     }
 
-    fun retryLoad() {
-        source.retry()
+    fun retryCharactersLoad() {
+        source.doRetry()
     }
 }

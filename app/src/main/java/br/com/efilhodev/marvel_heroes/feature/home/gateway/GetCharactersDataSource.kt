@@ -1,24 +1,22 @@
 package br.com.efilhodev.marvel_heroes.feature.home.gateway
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PageKeyedDataSource
+import androidx.paging.PositionalDataSource
 import br.com.efilhodev.marvel_heroes.feature.home.business.GetCharactersUseCase
 import br.com.efilhodev.marvel_heroes.feature.home.business.PageParams
 import br.com.efilhodev.marvel_heroes.model.Character
 import javax.inject.Inject
 
 class GetCharactersDataSource @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase) :
-    PageKeyedDataSource<Int, Character>() {
+    PositionalDataSource<Character>() {
 
     private val page = PageParams(DEFAULT_PAGE_LIMIT, 0)
-    private lateinit var action: () -> Unit
+    private lateinit var actionRetry: () -> Unit
 
     val state = MutableLiveData<DataSourceState>()
 
-    override fun loadInitial(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Character>
-    ) {
+    override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Character>) {
+
         getCharactersUseCase.asFlow(param = page) {
             onLoading = { state.postValue(DataSourceState.LOADING) }
 
@@ -28,55 +26,46 @@ class GetCharactersDataSource @Inject constructor(private val getCharactersUseCa
             }
 
             onError = {
-                setInitialLoadRetry(params, callback)
+                setInitialLoadRetryAction(params, callback)
                 state.postValue(DataSourceState.ERROR)
             }
         }
     }
 
-    private fun setInitialLoadRetry(
-        params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Character>
+    private fun setInitialLoadRetryAction(
+        params: LoadInitialParams, callback:
+        LoadInitialCallback<Character>
     ) {
-        action = { loadInitial(params, callback) }
+        actionRetry = { loadInitial(params, callback) }
     }
 
-    override fun loadAfter(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, Character>
-    ) {
-        page.offset = params.key
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Character>) {
+        page.offset = params.startPosition
 
         getCharactersUseCase.asFlow(param = page) {
             onLoading = { state.postValue(DataSourceState.LOADING) }
 
             onSuccess = { result ->
-                callback.onResult(result.data, params.key + page.limit)
+                callback.onResult(result.data)
                 state.postValue(DataSourceState.DONE)
             }
 
             onError = {
-                setAfterLoadRetry(params, callback)
+                setRangeLoadRetryAction(params, callback)
                 state.postValue(DataSourceState.ERROR)
             }
         }
     }
 
-    private fun setAfterLoadRetry(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, Character>
+    private fun setRangeLoadRetryAction(
+        params: LoadRangeParams,
+        callback: LoadRangeCallback<Character>
     ) {
-        action = { loadAfter(params, callback) }
+        actionRetry = { loadRange(params, callback) }
     }
 
-    override fun loadBefore(
-        params: LoadParams<Int>,
-        callback: LoadCallback<Int, Character>
-    ) {
-    }
-
-    fun retry() {
-        action.invoke()
+    fun doRetry() {
+        actionRetry.invoke()
     }
 
     companion object {

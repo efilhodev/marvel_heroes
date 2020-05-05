@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun retryCharactersLoad() {
-        factory.retryLoad()
+        factory.retryCharactersLoad()
     }
 
     fun setOrRemoveFavoriteCharacter(character: Character, isFavorite: Boolean) {

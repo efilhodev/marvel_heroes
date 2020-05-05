@@ -13,7 +13,7 @@ class HomeRepositoryImpl @Inject constructor(
 ) : BaseRepositoryImpl(), HomeRepository {
 
     override fun getCharacters(params: PageParams): Flow<CharacterDataWrapper> {
-        return api.requestCharacters(limit = params.limit, offset = params.offset)
+        return api.requestCharacters(limit = params.limit, offset = params.offset, nameStartsWith = params.query)
     }
 
     override fun getFavoritesCharactersIds(): Flow<List<Int>> {
