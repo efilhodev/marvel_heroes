@@ -23,19 +23,21 @@ class SearchViewModel @Inject constructor(
     val state = MutableLiveData<DataSourceState>()
     val actionFavoritesCharactersIds: MutableLiveData<List<Int>> = MutableLiveData()
 
-    fun getCharactersByName(name: String) {
-        val page = PageParams(DEFAULT_SEARCH_BY_NAME_LIMIT, query = name)
-        getCharactersUseCase.asFlow(viewModelScope, param = page) {
-            onLoading = { state.postValue(DataSourceState.LOADING) }
+    fun getCharactersByName(name: String?) {
+        name?.run {
+            val page = PageParams(DEFAULT_SEARCH_BY_NAME_LIMIT, query = this)
+            getCharactersUseCase.asFlow(viewModelScope, param = page) {
+                onLoading = { state.postValue(DataSourceState.LOADING) }
 
-            onSuccess = {
-                state.postValue(DataSourceState.DONE)
-                getCharacters.postValue(it.data)
-            }
+                onSuccess = {
+                    state.postValue(DataSourceState.DONE)
+                    getCharacters.postValue(it.data)
+                }
 
-            onError = {
-                state.postValue(DataSourceState.ERROR)
-                postErrorMessage(it.throwable.message)
+                onError = {
+                    state.postValue(DataSourceState.ERROR)
+                    postErrorMessage(it.throwable.message)
+                }
             }
         }
     }

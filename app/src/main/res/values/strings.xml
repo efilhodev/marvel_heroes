@@ -6,4 +6,5 @@
     <string name="characters">Characters</string>
     <string name="favorites">Favorites</string>
     <string name="favorites_empty_list">You have no favorites</string>
+    <string name="empty_search_list">Nothing found for this search. Press back and try again</string>
 </resources>

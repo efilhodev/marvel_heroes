@@ -21,6 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:contentInsetRight="0dp"
+            android:contentInsetEnd="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:titleTextAppearance="@style/TextAppearance.Big"
@@ -28,9 +36,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent">
-
+                android:layout_height="match_parent">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -38,23 +44,53 @@
                     android:layout_marginBottom="@dimen/margin_default"
                     android:text="@string/app_name"
                     android:textAppearance="@style/TextAppearance.Big"
+                    android:layout_marginStart="@dimen/margin_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <EditText
+                    android:id="@+id/host_search_edit_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:paddingStart="@dimen/padding_default"
+                    android:paddingEnd="@dimen/padding_default"
+                    android:textAppearance="@style/TextAppearance"
+                    android:textColor="@color/colorAccent"
+                    android:visibility="gone"
+                    android:maxLength="20"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
                 <ImageView
                     android:id="@+id/host_search_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_default"
-                    android:layout_marginEnd="@dimen/margin_default"
-                    android:layout_marginBottom="@dimen/margin_default"
-                    android:src="@drawable/ic_search_24dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_default"
+                    android:src="@drawable/ic_search_24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/host_search_close_view"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <ImageView
+                    android:id="@+id/host_search_close_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="@dimen/padding_default"
+                    android:src="@drawable/ic_close_24dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -27,8 +27,16 @@ class SearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewmodel.getCharactersByName("Sp")
+        val query = getQueryNameArg()
+
+        viewmodel.getCharactersByName(query)
+        search_error_text_view.setOnClickListener { viewmodel.getCharactersByName(query) }
+
         setupCharacterListAdapter()
+    }
+
+    private fun getQueryNameArg(): String? {
+        return intent.getStringExtra(SearchActivity.QUERY_NAME_ARG)
     }
 
     override fun initViewModel(): BaseViewModel? {
@@ -88,7 +96,12 @@ class SearchActivity : BaseActivity() {
     private fun observeGetCharacters() {
         viewmodel.getCharacters.observe(
             this,
-            Observer { characters -> adapter.submitList(characters) })
+            Observer { characters ->
+                run {
+                    if (characters.isEmpty()) search_empty_list_text_view.visibility = View.VISIBLE
+                    else adapter.submitList(characters)
+                }
+            })
     }
 
     private fun observeCharacterDataSourceState() {
@@ -111,6 +124,7 @@ class SearchActivity : BaseActivity() {
             }
         }
     }
+
     private fun showErrorState() {
         if (isInitialLoad) {
             search_progress_bar.visibility = View.GONE
@@ -131,4 +145,7 @@ class SearchActivity : BaseActivity() {
         search_error_text_view.visibility = View.GONE
     }
 
+    companion object {
+        const val QUERY_NAME_ARG = "ARG_QUERY_NAME"
+    }
 }
