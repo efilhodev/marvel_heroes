@@ -14,7 +14,6 @@ import br.com.efilhodev.marvel_heroes.feature.home.gateway.DataSourceState
 import br.com.efilhodev.marvel_heroes.feature.home.view.HomeFragment
 import br.com.efilhodev.marvel_heroes.feature.search.gateway.SearchViewModel
 import br.com.efilhodev.marvel_heroes.model.Character
-import kotlinx.android.synthetic.main.activity_host.*
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : BaseActivity() {
@@ -45,7 +44,7 @@ class SearchActivity : BaseActivity() {
     }
 
     override fun onNetworkConnectionChangedStatus(isConnected: Boolean) {
-        if (isConnected.not()) showErrorSnackBar(host_root, getString(R.string.error_connection))
+        if (isConnected.not()) showErrorSnackBar(search_root, getString(R.string.error_connection))
         else hideErrorSnackBar()
     }
 
