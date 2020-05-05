@@ -61,6 +61,7 @@
                     android:textColor="@color/colorAccent"
                     android:visibility="gone"
                     android:maxLength="20"
+                    android:lines="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

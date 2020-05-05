@@ -50,6 +50,8 @@ class HostActivity : BaseActivity() {
         if (host_search_edit_view.isVisible.not()) {
             host_search_close_view.visibility = View.VISIBLE
             host_search_edit_view.visibility = View.VISIBLE
+            host_search_edit_view.requestFocus()
+            showKeyboard()
         } else {
             val query = host_search_edit_view.text.toString()
             if (query.isBlank().not()) navigateToSearchActivity(query)
@@ -57,6 +59,7 @@ class HostActivity : BaseActivity() {
     }
 
     private fun onCloseSearchClick() {
+        hideKeyboard(host_root)
         host_search_close_view.visibility = View.GONE
         host_search_edit_view.visibility = View.GONE
         host_search_edit_view.setText("")
