@@ -16,8 +16,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 abstract class UseCase<P, R> {
-    @Inject
-    lateinit var api : API
 
     fun asFlow(
         scope: CoroutineScope = GlobalScope,
